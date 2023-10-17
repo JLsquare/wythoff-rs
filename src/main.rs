@@ -4,8 +4,8 @@ mod ai;
 
 extern crate rand;
 use std::io;
-use crate::ai::random_ai;
-use crate::user::get_player_move;
+use crate::ai::{better_random, full_random};
+use crate::user::player_move;
 use crate::utils::Board;
 
 fn main() {
@@ -18,32 +18,20 @@ fn main() {
     board.display();
 
     loop {
-        loop {
-            let (direction, steps) = random_ai(&board);
-            if board.move_piece(direction, steps) {
-                println!("AI moved {:?} {}", direction, steps);
-                board.display();
-                break;
-            } else {
-                println!("Invalid move by AI, trying again...");
-            }
-        }
+        let (direction, steps) = better_random(&board);
+        board.move_piece(direction, steps);
+        println!("AI moved {:?} {}", direction, steps);
+        board.display();
 
         if board.position() == (0, 0) {
             println!("AI wins!");
             break;
         }
 
-        loop {
-            let (direction, steps) = get_player_move();
-            if board.move_piece(direction, steps) {
-                println!("User moved {:?} {}", direction, steps);
-                board.display();
-                break;
-            } else {
-                println!("Invalid move, try again...");
-            }
-        }
+        let (direction, steps) = player_move(&board);
+        board.move_piece(direction, steps);
+        println!("User moved {:?} {}", direction, steps);
+        board.display();
 
         if board.position() == (0, 0) {
             println!("User win!");

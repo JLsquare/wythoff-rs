@@ -7,7 +7,7 @@ pub enum Direction {
     Diagonal,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Board {
     size: usize,
     position: (usize, usize),
@@ -51,6 +51,9 @@ impl Board {
     }
 
     pub fn is_valid_move(&self, direction: Direction, steps: usize) -> bool {
+        if steps == 0 {
+            return false;
+        }
         match direction {
             Direction::Left => self.position.0 >= steps,
             Direction::Down => self.position.1 >= steps,

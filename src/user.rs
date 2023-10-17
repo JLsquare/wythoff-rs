@@ -1,5 +1,5 @@
 use std::io;
-use crate::utils::Direction;
+use crate::utils::{Board, Direction};
 
 pub fn parse_input(input: &str) -> Option<(Direction, usize)> {
     let parts: Vec<&str> = input.split_whitespace().collect();
@@ -20,14 +20,17 @@ pub fn parse_input(input: &str) -> Option<(Direction, usize)> {
     }
 }
 
-pub fn get_player_move() -> (Direction, usize) {
+pub fn player_move(board: &Board) -> (Direction, usize) {
     loop {
         println!("Enter your move as two numbers separated by a space:");
         println!("0 => left, 1 => down, 2 => diagonal");
+        println!("For example, '1 3' moves down 3 spaces.");
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
         if let Some((direction, steps)) = parse_input(&input) {
-            return (direction, steps);
+            if board.is_valid_move(direction, steps) {
+                return (direction, steps);
+            }
         } else {
             println!("Invalid input, try again.");
         }
