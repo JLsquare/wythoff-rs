@@ -4,7 +4,7 @@ mod ai;
 
 extern crate rand;
 use std::io;
-use crate::ai::{better_random, full_random};
+use crate::ai::{AIStrategy, better_random, choose_ai_strategy, full_random, grundy};
 use crate::user::player_move;
 use crate::utils::Board;
 
@@ -17,8 +17,14 @@ fn main() {
     let mut board = Board::new(size);
     board.display();
 
+    let ai_strategy = choose_ai_strategy();
+
     loop {
-        let (direction, steps) = better_random(&board);
+        let (direction, steps) = match ai_strategy {
+            AIStrategy::BetterRandom => better_random(&board),
+            AIStrategy::FullRandom => full_random(&board),
+            AIStrategy::Perfect => grundy(&board),
+        };
         board.move_piece(direction, steps);
         println!("AI moved {:?} {}", direction, steps);
         board.display();
