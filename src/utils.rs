@@ -1,4 +1,7 @@
+use std::collections::HashMap;
+use std::time::Instant;
 use rand::Rng;
+use crate::ai::calculate_grundy;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Direction {
@@ -67,5 +70,14 @@ impl Board {
 
     pub fn position(&self) -> (usize, usize) {
         self.position
+    }
+}
+
+pub fn test_grundy_performance(max_size: usize) {
+    for size in 1..=max_size {
+        let start_time = Instant::now();
+        let _ = calculate_grundy(size);
+        let duration = start_time.elapsed().as_nanos();
+        println!("Size: {}, Time (s): {}, Time (ns): {} nanoseconds", size, duration as f64 / 1_000_000_000f64, duration);
     }
 }

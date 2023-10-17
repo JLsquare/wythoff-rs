@@ -92,7 +92,7 @@ pub fn grundy(board: &Board) -> (Direction, usize) {
     better_random(board)
 }
 
-fn calculate_grundy(n: usize) -> Vec<Vec<usize>> {
+pub fn calculate_grundy(n: usize) -> Vec<Vec<usize>> {
     let mut grundy = vec![vec![0; n + 1]; n + 1];
 
     fn mex(set: &Vec<usize>) -> usize {

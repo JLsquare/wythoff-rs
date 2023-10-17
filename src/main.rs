@@ -6,9 +6,20 @@ extern crate rand;
 use std::io;
 use crate::ai::{AIStrategy, better_random, choose_ai_strategy, full_random, grundy};
 use crate::user::player_move;
-use crate::utils::Board;
+use crate::utils::{Board, test_grundy_performance};
 
 fn main() {
+    println!("Test the performance of grundy function ? (y/n)");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    if input.trim() == "y" {
+        println!("Enter the max size: ");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+        let max_size: usize = input.trim().parse().expect("Please type a number");
+        test_grundy_performance(max_size);
+        return;
+    }
     println!("Enter the board size: ");
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to read line");
