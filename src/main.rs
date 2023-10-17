@@ -2,28 +2,38 @@ mod utils;
 mod user;
 mod ai;
 
-extern crate rand;
 use std::io;
 use crate::ai::{AIStrategy, better_random, choose_ai_strategy, full_random, grundy};
 use crate::user::player_move;
 use crate::utils::{Board, test_grundy_performance};
 
 fn main() {
-    println!("Test the performance of grundy function ? (y/n)");
     let mut input = String::new();
+
+    println!("Test the performance of grundy function? (y/n)");
     io::stdin().read_line(&mut input).expect("Failed to read line");
-    if input.trim() == "y" {
+
+    if input.trim().eq_ignore_ascii_case("y") {
         println!("Enter the max size: ");
-        let mut input = String::new();
+        input.clear();
         io::stdin().read_line(&mut input).expect("Failed to read line");
-        let max_size: usize = input.trim().parse().expect("Please type a number");
-        test_grundy_performance(max_size);
+        match input.trim().parse::<usize>() {
+            Ok(max_size) => test_grundy_performance(max_size),
+            Err(_) => println!("Please type a number"),
+        }
         return;
     }
+
     println!("Enter the board size: ");
-    let mut input = String::new();
+    input.clear();
     io::stdin().read_line(&mut input).expect("Failed to read line");
-    let size: usize = input.trim().parse().expect("Please type a number");
+    let size: usize = match input.trim().parse() {
+        Ok(size) => size,
+        Err(_) => {
+            println!("Please type a number");
+            return;
+        }
+    };
 
     let mut board = Board::new(size);
     board.display();

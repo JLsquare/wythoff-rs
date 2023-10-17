@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+
 use std::time::Instant;
 use rand::Rng;
 use crate::ai::calculate_grundy;
@@ -74,10 +74,12 @@ impl Board {
 }
 
 pub fn test_grundy_performance(max_size: usize) {
-    for size in 1..=max_size {
+    let mut size = 1;
+    while size <= max_size {
         let start_time = Instant::now();
         let _ = calculate_grundy(size);
         let duration = start_time.elapsed().as_nanos();
         println!("Size: {}, Time (s): {}, Time (ns): {} nanoseconds", size, duration as f64 / 1_000_000_000f64, duration);
+        size *= 2;
     }
 }
